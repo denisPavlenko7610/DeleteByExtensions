@@ -3,7 +3,7 @@
 string folderPath = Console.ReadLine();
 int deletedFiles = 0;
 
-string[] extensions = { ".pdf", ".srt", ".jpg", ".mp3", ".html" };
+string[] extensions = { ".pdf", ".srt", ".jpg", ".mp3", ".html", ".txt", ".rar", ".docx" };
 string outputString = new string(folderPath.Skip(1).Take(folderPath.Length-2).ToArray());
 
 
@@ -21,3 +21,4 @@ foreach (var extension in extensions)
 }
 
 Console.WriteLine($"Deleted files: {deletedFiles}");
+Console.ReadLine();
