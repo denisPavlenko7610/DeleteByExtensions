@@ -3,7 +3,7 @@
 string folderPath = Console.ReadLine();
 int deletedFiles = 0;
 
-string[] extensions = { ".pdf", ".srt", ".jpg" };
+string[] extensions = { ".pdf", ".srt", ".jpg", ".mp3", ".html" };
 string outputString = new string(folderPath.Skip(1).Take(folderPath.Length-2).ToArray());
 
 
