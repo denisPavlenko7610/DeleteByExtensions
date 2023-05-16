@@ -1,25 +1,28 @@
-﻿Console.WriteLine("Enter the path to the folder:");
-
-string folderPath = Console.ReadLine();
-int deletedFiles = 0;
-
-string[] extensions = { ".pdf", ".srt", ".jpg", ".mp3", ".html", ".txt", ".rar", ".docx", ".zip" };
-string outputString = new string(folderPath.Skip(1).Take(folderPath.Length-2).ToArray());
-
-
-foreach (var extension in extensions)
+﻿namespace DeleteByExtensions;
+class Program
 {
-    string[] filesToDelete = Directory.GetFiles($"{outputString}", $"*{extension}", SearchOption.AllDirectories);
-
-    Console.WriteLine($"Found {filesToDelete.Length} file(s) with the extension {extension}.");
-
-    foreach (string fileToDelete in filesToDelete)
+    public static void Main(string[] args)
     {
-        File.Delete(fileToDelete);
-        deletedFiles++;
+        ShowInitMessage();
+
+        FileWorker fileWorker = Init();
+
+        string outputString = fileWorker.ReadPath();
+
+        fileWorker.DeleteFiles(outputString);
+        fileWorker.DeleteEmptyFolders(outputString);
+        fileWorker.ShowDeletedEmptyFolders();
+
+        Console.ReadKey();
+    }
+
+    private static void ShowInitMessage()
+    {
+        Console.WriteLine("Enter the path to the folder:");
+    }
+
+    private static FileWorker Init()
+    {
+        return new FileWorker();
     }
 }
-
-Console.WriteLine($"Deleted files: {deletedFiles}");
-Console.ReadKey();
-Console.ReadKey();
