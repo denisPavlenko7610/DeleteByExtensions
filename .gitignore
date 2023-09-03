@@ -14,6 +14,9 @@ x64/
 [Bb]in/
 [Oo]bj/
 
+.vs
+.idea
+
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
@@ -146,3 +149,4 @@ _NCrunch*
 .vs/ProjectEvaluation/deletebyextensions.metadata.v7.bin
 .vs/DeleteByExtensions/v17/.futdcache.v2
 .vs/DeleteByExtensions/FileContentIndex/7dddf5a7-7ea4-429e-9b67-88deaae37e97.vsidx
+.vs/DeleteByExtensions/FileContentIndex/e646de1d-7549-4b8a-b743-8527f509e39b.vsidx
