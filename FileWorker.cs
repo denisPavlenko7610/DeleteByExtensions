@@ -1,58 +1,72 @@
-﻿namespace DeleteByExtensions;
-
-public class FileWorker
+﻿namespace DeleteByExtensions
 {
-    int deletedFoldersCount = 0;
-
-    public string ReadPath()
+    public class FileWorker
     {
-        string folderPath = Console.ReadLine().Trim();
-        if (String.IsNullOrWhiteSpace(folderPath))
-            return "";
+        int deletedFoldersCount = 0;
 
-        string outputString = new string(folderPath.Skip(1).Take(folderPath.Length - 2).ToArray());
-        return outputString;
-    }
-
-    public void DeleteFiles(string folderPath)
-    {
-        int deletedFiles = 0;
-
-        string[] extensions = { ".pdf", ".srt", ".jpg", ".mp3", ".html", ".txt", ".rar", ".docx", ".zip", ".pptx" };
-
-        foreach (var extension in extensions)
+        public string ReadPath()
         {
-            string[] filesToDelete = Directory.GetFiles($"{folderPath}", $"*{extension}", SearchOption.AllDirectories);
+            string folderPath = Console.ReadLine()?.Trim();
 
-            Console.WriteLine($"Found {filesToDelete.Length} file(s) with the extension {extension}.");
+            if (string.IsNullOrWhiteSpace(folderPath))
+                return "";
 
-            foreach (string fileToDelete in filesToDelete)
+            return folderPath;
+        }
+
+        public void DeleteFiles(string folderPath)
+        {
+            int deletedFiles = 0;
+
+            string[] extensions = { ".pdf", ".srt", ".jpg", ".mp3", ".html", ".txt", ".rar", ".docx", ".zip", ".pptx"};
+
+            try
             {
-                File.Delete(fileToDelete);
-                deletedFiles++;
+                foreach (var extension in extensions)
+                {
+                    string[] filesToDelete = Directory.GetFiles(folderPath, $"*{extension}", SearchOption.AllDirectories);
+
+                    Console.WriteLine($"Found {filesToDelete.Length} file(s) with the extension {extension}.");
+
+                    foreach (string fileToDelete in filesToDelete)
+                    {
+                        File.Delete(fileToDelete);
+                        deletedFiles++;
+                    }
+                }
+
+                Console.WriteLine($"Deleted files: {deletedFiles}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error deleting files: {ex.Message}");
             }
         }
 
-        Console.WriteLine($"Deleted files: {deletedFiles}");
-    }
-
-    public void DeleteEmptyFolders(string targetDirectory)
-    {
-        foreach (var directory in Directory.GetDirectories(targetDirectory))
+        public void DeleteEmptyFolders(string targetDirectory)
         {
-            var s = directory;
-            DeleteEmptyFolders(directory);
-
-            if (Directory.GetFiles(directory).Length == 0 && Directory.GetDirectories(directory).Length == 0)
+            try
             {
-                Directory.Delete(directory, false);
-                deletedFoldersCount++;
+                foreach (var directory in Directory.GetDirectories(targetDirectory))
+                {
+                    DeleteEmptyFolders(directory);
+
+                    if (Directory.GetFiles(directory).Length == 0 && Directory.GetDirectories(directory).Length == 0)
+                    {
+                        Directory.Delete(directory, false);
+                        deletedFoldersCount++;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error deleting folders: {ex.Message}");
             }
         }
-    }
 
-    public void ShowDeletedEmptyFolders()
-    { 
-        Console.WriteLine($"Deleted empty folders: {deletedFoldersCount}");
+        public void ShowDeletedEmptyFolders()
+        {
+            Console.WriteLine($"Deleted empty folders: {deletedFoldersCount}");
+        }
     }
 }
