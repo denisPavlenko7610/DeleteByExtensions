@@ -47,9 +47,9 @@ namespace FileDeletionApp
                 return;
             }
 
-            Dictionary<string, int> deletedFilesCount = DeleteFiles(folderPath, selectedExtensions);
+            Dictionary<string, int> deletedFilesCount = DeleteFiles(folderPath, selectedExtensions, out int deleteEmptyFoldersCount);
 
-            ShowDeleteSummary(deletedFilesCount);
+            ShowDeleteSummary(deletedFilesCount, deleteEmptyFoldersCount);
         }
 
         private string[] GetSelectedExtensions()
@@ -86,12 +86,15 @@ namespace FileDeletionApp
             if (PptxCheckBox.IsChecked == true)
                 selectedExtensions.Add(".pptx");
 
+            if (VttCheckBox.IsChecked == true)
+                selectedExtensions.Add(".vtt");
+
             // Add checkboxes for other extensions here
 
             return selectedExtensions.ToArray();
         }
 
-        private Dictionary<string, int> DeleteFiles(string folderPath, string[] extensions)
+        private Dictionary<string, int> DeleteFiles(string folderPath, string[] extensions, out int deleteEmptyFoldersCount)
         {
             Dictionary<string, int> deletedFilesCount = new Dictionary<string, int>();
 
@@ -112,7 +115,7 @@ namespace FileDeletionApp
                     }
                 }
 
-                int deletedEmptyFoldersCount = DeleteEmptyFolders(folderPath);
+                deleteEmptyFoldersCount = DeleteEmptyFolders(folderPath);
                 foreach (var extension in extensions)
                 {
                     if (!deletedFilesCount.ContainsKey(extension))
@@ -126,6 +129,7 @@ namespace FileDeletionApp
             catch (Exception ex)
             {
                 System.Windows.MessageBox.Show($"An error occurred: {ex.Message}");
+                deleteEmptyFoldersCount = 0;
                 return null;
             }
         }
@@ -149,7 +153,7 @@ namespace FileDeletionApp
             return deletedEmptyFoldersCount;
         }
 
-        private void ShowDeleteSummary(Dictionary<string, int> deletedFilesCount)
+        private void ShowDeleteSummary(Dictionary<string, int> deletedFilesCount, int emptyFoldersCount)
         {
             string summary = "Deleted files summary:\n";
 
@@ -158,7 +162,7 @@ namespace FileDeletionApp
                 summary += $"{kvp.Key} - {kvp.Value} files\n";
             }
 
-            summary += "Deleted empty folders - " + deletedFilesCount.Values.Sum() + " folders";
+            summary += "Deleted empty folders - " + emptyFoldersCount + " folders";
 
             System.Windows.MessageBox.Show(summary);
         }

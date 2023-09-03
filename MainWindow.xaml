@@ -15,6 +15,7 @@
         <CheckBox Content=".docx" x:Name="DocxCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="120,110,0,0" Foreground="#eee" IsChecked="True"/>
         <CheckBox Content=".zip" x:Name="ZipCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,110,0,0" Foreground="#eee" IsChecked="True"/>
         <CheckBox Content=".pptx" x:Name="PptxCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0" Foreground="#eee" IsChecked="True"/>
+        <CheckBox Content=".vtt" x:Name="VttCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="120,140,0,0" Foreground="#eee" IsChecked="True"/>
         <!-- Add checkboxes for other extensions here -->
 
         <Label Content="Choose Folder:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,200,0,0" Foreground="#eee"/>
