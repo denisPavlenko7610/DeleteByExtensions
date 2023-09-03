@@ -1,0 +1,25 @@
+﻿<Window x:Class="FileDeletionApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Delete by extention recursively" Height="400" Width="400"
+        Background="#333">
+    <Grid>
+        <Label Content="Select Extensions:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,20,0,0" Foreground="#eee"/>
+        <CheckBox Content=".pdf" x:Name="PdfCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,50,0,0" Foreground="#eee"/>
+        <CheckBox Content=".srt" x:Name="SrtCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="120,50,0,0" Foreground="#eee"/>
+        <CheckBox Content=".jpg" x:Name="JpgCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,50,0,0" Foreground="#eee"/>
+        <CheckBox Content=".mp3" x:Name="Mp3CheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,80,0,0" Foreground="#eee"/>
+        <CheckBox Content=".html" x:Name="HtmlCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="120,80,0,0" Foreground="#eee"/>
+        <CheckBox Content=".txt" x:Name="TxtCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,80,0,0" Foreground="#eee"/>
+        <CheckBox Content=".rar" x:Name="RarCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,110,0,0" Foreground="#eee"/>
+        <CheckBox Content=".docx" x:Name="DocxCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="120,110,0,0" Foreground="#eee"/>
+        <CheckBox Content=".zip" x:Name="ZipCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,110,0,0" Foreground="#eee"/>
+        <CheckBox Content=".pptx" x:Name="PptxCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0" Foreground="#eee"/>
+        <!-- Add checkboxes for other extensions here -->
+
+        <Label Content="Choose Folder:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,200,0,0" Foreground="#eee"/>
+        <TextBox x:Name="FolderPathTextBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,230,0,0" Width="200"/>
+        <Button Content="Browse" Click="BrowseButton_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,230,0,0"/>
+        <Button Content="Delete" Click="DeleteButton_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,270,0,0"/>
+    </Grid>
+</Window>
