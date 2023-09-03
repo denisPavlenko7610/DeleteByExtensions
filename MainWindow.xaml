@@ -5,16 +5,16 @@
         Background="#333">
     <Grid>
         <Label Content="Select Extensions:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,20,0,0" Foreground="#eee"/>
-        <CheckBox Content=".pdf" x:Name="PdfCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,50,0,0" Foreground="#eee"/>
-        <CheckBox Content=".srt" x:Name="SrtCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="120,50,0,0" Foreground="#eee"/>
-        <CheckBox Content=".jpg" x:Name="JpgCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,50,0,0" Foreground="#eee"/>
-        <CheckBox Content=".mp3" x:Name="Mp3CheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,80,0,0" Foreground="#eee"/>
-        <CheckBox Content=".html" x:Name="HtmlCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="120,80,0,0" Foreground="#eee"/>
-        <CheckBox Content=".txt" x:Name="TxtCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,80,0,0" Foreground="#eee"/>
-        <CheckBox Content=".rar" x:Name="RarCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,110,0,0" Foreground="#eee"/>
-        <CheckBox Content=".docx" x:Name="DocxCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="120,110,0,0" Foreground="#eee"/>
-        <CheckBox Content=".zip" x:Name="ZipCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,110,0,0" Foreground="#eee"/>
-        <CheckBox Content=".pptx" x:Name="PptxCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0" Foreground="#eee"/>
+        <CheckBox Content=".pdf" x:Name="PdfCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,50,0,0" Foreground="#eee" IsChecked="True"/>
+        <CheckBox Content=".srt" x:Name="SrtCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="120,50,0,0" Foreground="#eee" IsChecked="True"/>
+        <CheckBox Content=".jpg" x:Name="JpgCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,50,0,0" Foreground="#eee" IsChecked="True"/>
+        <CheckBox Content=".mp3" x:Name="Mp3CheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,80,0,0" Foreground="#eee" IsChecked="True"/>
+        <CheckBox Content=".html" x:Name="HtmlCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="120,80,0,0" Foreground="#eee" IsChecked="True"/>
+        <CheckBox Content=".txt" x:Name="TxtCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,80,0,0" Foreground="#eee" IsChecked="True"/>
+        <CheckBox Content=".rar" x:Name="RarCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,110,0,0" Foreground="#eee" IsChecked="True"/>
+        <CheckBox Content=".docx" x:Name="DocxCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="120,110,0,0" Foreground="#eee" IsChecked="True"/>
+        <CheckBox Content=".zip" x:Name="ZipCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,110,0,0" Foreground="#eee" IsChecked="True"/>
+        <CheckBox Content=".pptx" x:Name="PptxCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0" Foreground="#eee" IsChecked="True"/>
         <!-- Add checkboxes for other extensions here -->
 
         <Label Content="Choose Folder:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,200,0,0" Foreground="#eee"/>
