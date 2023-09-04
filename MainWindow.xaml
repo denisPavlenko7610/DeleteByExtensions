@@ -5,19 +5,19 @@
         Background="#333">
     <Grid>
         <Label Content="Select Extensions:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="24,10,0,0" Foreground="#eee" FontSize="16"/>
-        <CheckBox Content="Delete Empty Folders" x:Name="DeleteEmptyFoldersCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="362,64,0,0" Foreground="#eee"
+        <CheckBox Content="Delete Empty Folders" x:Name="DeleteEmptyFoldersCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="362,150,0,0" Foreground="#eee"
                   FontSize="14" IsChecked="True"/>
-        <CheckBox Content=".pdf" x:Name="PdfCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="24,60,0,0" Foreground="#eee" IsChecked="True" FontSize="14"/>
-        <CheckBox Content=".srt" x:Name="SrtCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="119,60,0,0" Foreground="#eee" IsChecked="True" FontSize="14"/>
-        <CheckBox Content=".jpg" x:Name="JpgCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="224,64,0,0" Foreground="#eee" IsChecked="True" FontSize="14"/>
-        <CheckBox Content=".mp3" x:Name="Mp3CheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="24,96,0,0" Foreground="#eee" IsChecked="True" FontSize="14"/>
-        <CheckBox Content=".html" x:Name="HtmlCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="119,96,0,0" Foreground="#eee" IsChecked="True" FontSize="14"/>
-        <CheckBox Content=".txt" x:Name="TxtCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="224,100,0,0" Foreground="#eee" IsChecked="True" FontSize="14"/>
-        <CheckBox Content=".rar" x:Name="RarCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="24,132,0,0" Foreground="#eee" IsChecked="True" FontSize="14"/>
-        <CheckBox Content=".docx" x:Name="DocxCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="119,132,0,0" Foreground="#eee" IsChecked="True" FontSize="14"/>
-        <CheckBox Content=".zip" x:Name="ZipCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="224,136,0,0" Foreground="#eee" IsChecked="True" FontSize="14"/>
-        <CheckBox Content=".pptx" x:Name="PptxCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="24,168,0,0" Foreground="#eee" IsChecked="True" FontSize="14"/>
-        <CheckBox Content=".vtt" x:Name="VttCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="119,168,0,0" Foreground="#eee" IsChecked="True" FontSize="14"/>
+        <CheckBox Content=".pdf" x:Name="PdfCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="34,146,0,0" Foreground="#eee" IsChecked="True" FontSize="14"/>
+        <CheckBox Content=".srt" x:Name="SrtCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="129,146,0,0" Foreground="#eee" IsChecked="True" FontSize="14"/>
+        <CheckBox Content=".jpg" x:Name="JpgCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="234,150,0,0" Foreground="#eee" IsChecked="True" FontSize="14"/>
+        <CheckBox Content=".mp3" x:Name="Mp3CheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="34,182,0,0" Foreground="#eee" IsChecked="True" FontSize="14"/>
+        <CheckBox Content=".html" x:Name="HtmlCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="129,182,0,0" Foreground="#eee" IsChecked="True" FontSize="14"/>
+        <CheckBox Content=".txt" x:Name="TxtCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="234,186,0,0" Foreground="#eee" IsChecked="True" FontSize="14"/>
+        <CheckBox Content=".rar" x:Name="RarCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="34,218,0,0" Foreground="#eee" IsChecked="True" FontSize="14"/>
+        <CheckBox Content=".docx" x:Name="DocxCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="129,218,0,0" Foreground="#eee" IsChecked="True" FontSize="14"/>
+        <CheckBox Content=".zip" x:Name="ZipCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="234,222,0,0" Foreground="#eee" IsChecked="True" FontSize="14"/>
+        <CheckBox Content=".pptx" x:Name="PptxCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="34,254,0,0" Foreground="#eee" IsChecked="True" FontSize="14"/>
+        <CheckBox Content=".vtt" x:Name="VttCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="129,254,0,0" Foreground="#eee" IsChecked="True" FontSize="14"/>
 
         <!-- Add checkboxes for other extensions here -->
 
@@ -25,8 +25,8 @@
         <TextBox x:Name="FolderPathTextBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="24,375,0,0" Width="440" Height="26" FontSize="14"/>
         <Button Content="Browse" Click="BrowseButton_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="481,375,0,0" RenderTransformOrigin="0.488,0.689" Height="27" Width="64" FontSize="14"/>
         <Button Content="Delete" Click="DeleteButton_Click" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,443,0,0" Width="122" Height="28" FontSize="14"/>
-        <Button Content="All" Click="CheckAllClick" HorizontalAlignment="Left" VerticalAlignment="Top" Width="36" Background="Transparent" Foreground="#fff" Margin="28,266,0,0" FontSize="14"/>
-        <Button Content="None" Click="UncheckAllClick" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Transparent" Foreground="#fff" Margin="108,266,0,0" FontSize="14"/>
+        <Button Content="All" Click="CheckAllClick" HorizontalAlignment="Left" VerticalAlignment="Top" Width="36" Background="Transparent" Foreground="#fff" Margin="35,64,0,0" FontSize="14"/>
+        <Button Content="None" Click="UncheckAllClick" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Transparent" Foreground="#fff" Margin="91,64,0,0" FontSize="14" Height="23"/>
 
     </Grid>
 </Window>
