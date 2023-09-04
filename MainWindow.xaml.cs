@@ -94,7 +94,12 @@ namespace FileDeletionApp
                     }
                 }
 
-                deleteEmptyFoldersCount = DeleteEmptyFolders(folderPath);
+
+                deleteEmptyFoldersCount = 0;
+                
+                if (DeleteEmptyFoldersCheckBox.IsChecked == true)
+                    DeleteEmptyFolders(folderPath);
+
                 foreach (var extension in extensions)
                 {
                     if (!deletedFilesCount.ContainsKey(extension))
