@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Forms;
 
 namespace FileDeletionApp
@@ -56,40 +57,18 @@ namespace FileDeletionApp
         {
             List<string> selectedExtensions = new List<string>();
 
-            if (PdfCheckBox.IsChecked == true)
-                selectedExtensions.Add(".pdf");
+            string[] checkboxNames = { "PdfCheckBox", "SrtCheckBox", "JpgCheckBox", "Mp3CheckBox", "HtmlCheckBox",
+                               "TxtCheckBox", "RarCheckBox", "DocxCheckBox", "ZipCheckBox", "PptxCheckBox", "VttCheckBox" };
 
-            if (SrtCheckBox.IsChecked == true)
-                selectedExtensions.Add(".srt");
-
-            if (JpgCheckBox.IsChecked == true)
-                selectedExtensions.Add(".jpg");
-
-            if (Mp3CheckBox.IsChecked == true)
-                selectedExtensions.Add(".mp3");
-
-            if (HtmlCheckBox.IsChecked == true)
-                selectedExtensions.Add(".html");
-
-            if (TxtCheckBox.IsChecked == true)
-                selectedExtensions.Add(".txt");
-
-            if (RarCheckBox.IsChecked == true)
-                selectedExtensions.Add(".rar");
-
-            if (DocxCheckBox.IsChecked == true)
-                selectedExtensions.Add(".docx");
-
-            if (ZipCheckBox.IsChecked == true)
-                selectedExtensions.Add(".zip");
-
-            if (PptxCheckBox.IsChecked == true)
-                selectedExtensions.Add(".pptx");
-
-            if (VttCheckBox.IsChecked == true)
-                selectedExtensions.Add(".vtt");
-
-            // Add checkboxes for other extensions here
+            foreach (string checkboxName in checkboxNames)
+            {
+                System.Windows.Controls.CheckBox? checkbox = FindName(checkboxName)
+                    as System.Windows.Controls.CheckBox;
+                if (checkbox != null && checkbox.IsChecked == true)
+                {
+                    selectedExtensions.Add("." + checkboxName.ToLower().Replace("checkbox", ""));
+                }
+            }
 
             return selectedExtensions.ToArray();
         }
@@ -165,6 +144,27 @@ namespace FileDeletionApp
             summary += "Deleted empty folders - " + emptyFoldersCount + " folders";
 
             System.Windows.MessageBox.Show(summary);
+        }
+
+        private void SetAllCheckboxes(bool isChecked)
+        {
+            foreach (UIElement element in ((Grid)Content).Children)
+            {
+                if (element is System.Windows.Controls.CheckBox checkbox)
+                {
+                    checkbox.IsChecked = isChecked;
+                }
+            }
+        }
+
+        private void CheckAllClick(object sender, RoutedEventArgs e)
+        {
+            SetAllCheckboxes(true);
+        }
+
+        private void UncheckAllClick(object sender, RoutedEventArgs e)
+        {
+            SetAllCheckboxes(false);
         }
     }
 }
