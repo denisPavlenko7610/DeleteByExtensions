@@ -41,6 +41,16 @@ namespace FileDeletionApp
             }
 
             string[] selectedExtensions = GetSelectedExtensions();
+            string customExtension = CustomExtensionTextBox.Text.Trim();
+            if (!customExtension.StartsWith("."))
+            {
+                customExtension = "." + customExtension;
+            }
+
+            if (string.IsNullOrEmpty(customExtension) == false)
+            {
+                selectedExtensions = selectedExtensions.Concat(new[] { customExtension }).ToArray();
+            }
 
             if (selectedExtensions.Length == 0)
             {
@@ -48,9 +58,15 @@ namespace FileDeletionApp
                 return;
             }
 
-            Dictionary<string, int> deletedFilesCount = DeleteFiles(folderPath, selectedExtensions, out int deleteEmptyFoldersCount);
-
-            ShowDeleteSummary(deletedFilesCount, deleteEmptyFoldersCount);
+            try
+            {
+                Dictionary<string, int> deletedFilesCount = DeleteFiles(folderPath, selectedExtensions, out int deleteEmptyFoldersCount);
+                ShowDeleteSummary(deletedFilesCount, deleteEmptyFoldersCount);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show($"An error occurred: {ex.Message}");
+            }
         }
 
         private string[] GetSelectedExtensions()
