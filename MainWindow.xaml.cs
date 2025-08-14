@@ -2,190 +2,195 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Forms;
+using System.Windows.Input;
+using CheckBox = System.Windows.Controls.CheckBox;
+using Cursors = System.Windows.Input.Cursors;
+using MessageBox = System.Windows.MessageBox;
 
-namespace FileDeletionApp
+namespace DeleteByExtension
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
+        private static readonly List<string> ExtensionCheckboxNames =
+        [
+            "Pdf", "Srt", "Jpg", "Mp3", "Html",
+            "Txt", "Rar", "Docx", "Zip", "Pptx", "Vtt"
+        ];
+
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        private void BrowseButton_Click(object sender, RoutedEventArgs e)
+        private async void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            var folderDialog = new FolderBrowserDialog
+            try
             {
-                Description = "Select a folder"
-            };
-
-            DialogResult result = folderDialog.ShowDialog();
-
-            if (result == System.Windows.Forms.DialogResult.OK)
+                await DeleteButton_ClickAsync();
+            }
+            catch (Exception ex)
             {
-                FolderPathTextBox.Text = folderDialog.SelectedPath;
+                MessageBox.Show($"Operation failed: {ex.Message}");
             }
         }
 
-        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        private async Task DeleteButton_ClickAsync()
         {
-            string folderPath = FolderPathTextBox.Text;
-
+            string folderPath = FolderPathTextBox.Text.Trim();
             if (string.IsNullOrWhiteSpace(folderPath))
             {
-                System.Windows.MessageBox.Show("Please enter a folder path.");
+                MessageBox.Show("Please select a folder first.");
                 return;
             }
 
-            string[] selectedExtensions = GetSelectedExtensions();
-            string customExtension = CustomExtensionTextBox.Text.Trim();
-            if (!customExtension.StartsWith("."))
+            var selectedExtensions = GetSelectedExtensions();
+            if (!TryAddCustomExtension(selectedExtensions)) return;
+            if (selectedExtensions.Count == 0)
             {
-                customExtension = "." + customExtension;
-            }
-
-            if (string.IsNullOrEmpty(customExtension) == false)
-            {
-                selectedExtensions = selectedExtensions.Concat(new[] { customExtension }).ToArray();
-            }
-
-            if (selectedExtensions.Length == 0)
-            {
-                System.Windows.MessageBox.Show("Please select at least one extension.");
+                MessageBox.Show("Please select at least one extension.");
                 return;
             }
 
+            Mouse.OverrideCursor = Cursors.Wait;
             try
             {
-                Dictionary<string, int> deletedFilesCount = DeleteFiles(folderPath, selectedExtensions, out int deleteEmptyFoldersCount);
-                ShowDeleteSummary(deletedFilesCount, deleteEmptyFoldersCount);
+                bool deleteEmptyFolders = DeleteEmptyFoldersCheckBox.IsChecked == true;
+                var result = await Task.Run(() => 
+                    DeleteFilesAsync(folderPath, selectedExtensions, deleteEmptyFolders));
+
+                ShowDeleteSummary(result.deletedFiles, result.emptyFoldersCount);
             }
-            catch (Exception ex)
+            finally
             {
-                System.Windows.MessageBox.Show($"An error occurred: {ex.Message}");
+                Mouse.OverrideCursor = null;
             }
         }
 
-        private string[] GetSelectedExtensions()
+        private bool TryAddCustomExtension(ICollection<string> extensions)
         {
-            List<string> selectedExtensions = new List<string>();
+            var customExt = CustomExtensionTextBox.Text.Trim();
+            if (string.IsNullOrWhiteSpace(customExt)) return true;
 
-            string[] checkboxNames = { "PdfCheckBox", "SrtCheckBox", "JpgCheckBox", "Mp3CheckBox", "HtmlCheckBox",
-                               "TxtCheckBox", "RarCheckBox", "DocxCheckBox", "ZipCheckBox", "PptxCheckBox", "VttCheckBox" };
-
-            foreach (string checkboxName in checkboxNames)
+            if (!customExt.StartsWith(".")) customExt = "." + customExt;
+            if (customExt.Length < 2)
             {
-                System.Windows.Controls.CheckBox? checkbox = FindName(checkboxName)
-                    as System.Windows.Controls.CheckBox;
-                if (checkbox != null && checkbox.IsChecked == true)
-                {
-                    selectedExtensions.Add("." + checkboxName.ToLower().Replace("checkbox", ""));
-                }
+                MessageBox.Show("Custom extension must be at least 1 character.");
+                return false;
             }
 
-            return selectedExtensions.ToArray();
+            extensions.Add(customExt);
+            return true;
         }
 
-        private Dictionary<string, int> DeleteFiles(string folderPath, string[] extensions, out int deleteEmptyFoldersCount)
+        private List<string> GetSelectedExtensions()
         {
-            Dictionary<string, int> deletedFilesCount = new Dictionary<string, int>();
+            return ExtensionCheckboxNames
+                .Where(name => 
+                    FindName($"{name}CheckBox") is CheckBox checkbox 
+                    && checkbox.IsChecked == true)
+                .Select(name => "." + name.ToLower())
+                .ToList();
+        }
 
-            try
+        private (Dictionary<string, int> deletedFiles, int emptyFoldersCount) 
+            DeleteFilesAsync(string folderPath, List<string> extensions, bool deleteEmptyFolders)
+        {
+            var deletedFiles = new Dictionary<string, int>();
+            foreach (var ext in extensions) deletedFiles[ext] = 0;
+
+            // File deletion
+            foreach (var extension in extensions)
             {
-                foreach (var extension in extensions)
+                try
                 {
-                    var filesToDelete = Directory.GetFiles(folderPath, $"*{extension}", SearchOption.AllDirectories);
-
-                    if (filesToDelete.Length > 0)
+                    var files = Directory.EnumerateFiles(folderPath, $"*{extension}", SearchOption.AllDirectories);
+                    foreach (var file in files)
                     {
-                        deletedFilesCount[extension] = filesToDelete.Length;
-
-                        foreach (var file in filesToDelete)
+                        try
                         {
                             File.Delete(file);
+                            deletedFiles[extension]++;
                         }
+                        catch { /* Skip locked files */ }
                     }
                 }
-
-
-                deleteEmptyFoldersCount = 0;
-                
-                if (DeleteEmptyFoldersCheckBox.IsChecked == true)
-                    DeleteEmptyFolders(folderPath);
-
-                foreach (var extension in extensions)
-                {
-                    if (!deletedFilesCount.ContainsKey(extension))
-                    {
-                        deletedFilesCount[extension] = 0;
-                    }
-                }
-
-                return deletedFilesCount;
+                catch { /* Skip inaccessible directories */ }
             }
-            catch (Exception ex)
+
+            // Empty folder deletion
+            int emptyFoldersCount = 0;
+            if (deleteEmptyFolders)
             {
-                System.Windows.MessageBox.Show($"An error occurred: {ex.Message}");
-                deleteEmptyFoldersCount = 0;
-                return null;
+                try
+                {
+                    emptyFoldersCount = DeleteEmptyFoldersRecursive(folderPath);
+                }
+                catch { /* Ignore folder deletion errors */ }
             }
+
+            return (deletedFiles, emptyFoldersCount);
         }
 
-        private int DeleteEmptyFolders(string folderPath)
+        private int DeleteEmptyFoldersRecursive(string path)
         {
-            int deletedEmptyFoldersCount = 0;
-            string[] subdirectories = Directory.GetDirectories(folderPath);
-
-            foreach (string subdirectory in subdirectories)
+            int deletedCount = 0;
+            foreach (var directory in Directory.GetDirectories(path))
             {
-                int deletedCount = DeleteEmptyFolders(subdirectory);
-                deletedEmptyFoldersCount += deletedCount;
-
-                if (!Directory.EnumerateFileSystemEntries(subdirectory).Any())
+                try
                 {
-                    Directory.Delete(subdirectory);
+                    deletedCount += DeleteEmptyFoldersRecursive(directory);
+                }
+                catch { /* Continue processing other folders */ }
+            }
+
+            try
+            {
+                if (!Directory.EnumerateFileSystemEntries(path).Any())
+                {
+                    Directory.Delete(path);
+                    deletedCount++;
                 }
             }
+            catch { /* Ignore deletion errors */ }
 
-            return deletedEmptyFoldersCount;
+            return deletedCount;
         }
 
-        private void ShowDeleteSummary(Dictionary<string, int> deletedFilesCount, int emptyFoldersCount)
+        private void ShowDeleteSummary(Dictionary<string, int> deletedFiles, int emptyFolders)
         {
-            string summary = "Deleted files summary:\n";
-
-            foreach (var kvp in deletedFilesCount)
+            var summary = new System.Text.StringBuilder("Deleted files summary:\n");
+            foreach (var (extension, count) in deletedFiles)
             {
-                summary += $"{kvp.Key} - {kvp.Value} files\n";
+                summary.AppendLine($"{extension}: {count} files");
             }
-
-            summary += "Deleted empty folders - " + emptyFoldersCount + " folders";
-
-            System.Windows.MessageBox.Show(summary);
+            summary.Append($"Deleted empty folders: {emptyFolders}");
+            MessageBox.Show(summary.ToString());
         }
 
-        private void SetAllCheckboxes(bool isChecked)
+        private void SetAllExtensionCheckboxes(bool isChecked)
         {
-            foreach (UIElement element in ((Grid)Content).Children)
+            foreach (var name in ExtensionCheckboxNames)
             {
-                if (element is System.Windows.Controls.CheckBox checkbox)
+                if (FindName($"{name}CheckBox") is CheckBox checkbox)
                 {
                     checkbox.IsChecked = isChecked;
                 }
             }
         }
 
-        private void CheckAllClick(object sender, RoutedEventArgs e)
-        {
-            SetAllCheckboxes(true);
-        }
+        private void CheckAllClick(object sender, RoutedEventArgs e) => SetAllExtensionCheckboxes(true);
+        private void UncheckAllClick(object sender, RoutedEventArgs e) => SetAllExtensionCheckboxes(false);
 
-        private void UncheckAllClick(object sender, RoutedEventArgs e)
+        private void BrowseButton_Click(object sender, RoutedEventArgs e)
         {
-            SetAllCheckboxes(false);
+            using var dialog = new FolderBrowserDialog { Description = "Select folder" };
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                FolderPathTextBox.Text = dialog.SelectedPath;
+            }
         }
     }
 }
