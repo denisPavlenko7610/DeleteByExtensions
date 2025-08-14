@@ -89,8 +89,7 @@ namespace DeleteByExtension
         {
             return ExtensionCheckboxNames
                 .Where(name => 
-                    FindName($"{name}CheckBox") is CheckBox checkbox 
-                    && checkbox.IsChecked == true)
+                    FindName($"{name}CheckBox") is CheckBox { IsChecked: true })
                 .Select(name => "." + name.ToLower())
                 .ToList();
         }
